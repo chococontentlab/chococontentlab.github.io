@@ -520,3 +520,35 @@ section{scroll-margin-top:96px}
   .footer-bean{flex-basis:28px;width:28px;height:26px}
   .footer-note p{font-size:11px;line-height:17px}
 }
+
+/* ---------- case accordion + logo image + team photo ---------- */
+details.case-band{display:block;height:auto;padding:0}
+details.case-band > summary{
+  list-style:none;cursor:pointer;position:relative;overflow:hidden;
+  height:300px;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:0 160px 56px 90px;
+}
+details.case-band > summary::-webkit-details-marker{display:none}
+.case-toggle{
+  position:absolute;right:56px;bottom:52px;z-index:2;
+  width:48px;height:48px;border:2px solid rgba(255,255,255,.7);border-radius:50%;
+}
+.case-toggle::before,.case-toggle::after{
+  content:"";position:absolute;left:50%;top:50%;width:20px;height:2px;background:#fff;
+  transform:translate(-50%,-50%);transition:transform .25s ease;
+}
+.case-toggle::after{transform:translate(-50%,-50%) rotate(90deg)}
+details[open] .case-toggle::after{transform:translate(-50%,-50%) rotate(0deg)}
+.case-body{padding:8px 90px 56px;position:relative;z-index:1}
+.case-tbd{margin:0;font-size:22px;color:var(--grey-tx)}
+.logo-img{display:block;width:100%;max-width:730px;height:auto;margin-top:40px}
+.photo-slot{overflow:hidden}
+.photo-slot img{width:100%;height:100%;object-fit:cover;display:block}
+@media (max-width:640px){
+  details.case-band > summary{height:132px;padding:0 64px 20px 22px}
+  .case-toggle{right:20px;bottom:22px;width:30px;height:30px;border-width:1.5px}
+  .case-toggle::before,.case-toggle::after{width:12px}
+  .case-body{padding:4px 22px 26px}
+  .case-tbd{font-size:14px}
+  .logo-img{margin-top:20px}
+}
