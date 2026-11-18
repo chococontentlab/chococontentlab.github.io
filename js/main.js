@@ -1,8 +1,5 @@
-/* CHOCO Content Lab — mini site v2
-   Header state, mobile menu, and the quote form's mailto fallback.
-   The form has no backend yet (P8): submitting opens the visitor's
-   email app addressed to ryan.ding@chocoent.com and calvin.fu@chocoent.com. Wire P8 to a
-   real endpoint (form service / CRM) before launch. */
+/* CHOCO Content Lab — mini site
+   Header state, mobile menu, and the quote form (sent via FormSubmit). */
 (function () {
   "use strict";
 
@@ -28,28 +25,48 @@
     });
   });
 
+  /* Quote form: sends straight to Ryan's inbox via FormSubmit
+     (formsubmit.co). The first submission triggers a one-time
+     activation email to ryan.ding@chocoent.com; after he confirms,
+     every submission arrives as a normal email. No mail app needed. */
+  var FORM_ENDPOINT = "https://formsubmit.co/ajax/ryan.ding@chocoent.com";
   var form = document.getElementById("quoteForm");
+  var note = document.getElementById("formNote");
+  var sendBtn = form.querySelector(".btn-send");
+  function showNote(text) { note.textContent = text; note.hidden = false; }
+
   form.addEventListener("submit", function (event) {
     event.preventDefault();
     var data = new FormData(form);
     var name = (data.get("name") || "").trim();
     var company = (data.get("company") || "").trim();
-    var contact = (data.get("contact") || "").trim();
-    var destination = (data.get("destination") || "").trim();
-    var subject = "Quote request — " + (company || name);
-    var body = [
-      "Name: " + name,
-      "Company / brand: " + company,
-      "Email or WeChat: " + contact,
-      "Where do you want the brand to land? " + destination,
-      "",
-      "— sent from chococontentlab.com"
-    ].join("\n");
-    var note = document.getElementById("formNote");
-    if (note) note.hidden = false;
-    window.location.href =
-      "mailto:ryan.ding@chocoent.com,calvin.fu@chocoent.com" +
-      "?subject=" + encodeURIComponent(subject) +
-      "&body=" + encodeURIComponent(body);
+    var payload = {
+      "Name": name,
+      "Company / brand": company,
+      "Email or WeChat": (data.get("contact") || "").trim(),
+      "Where do you want the brand to land?": (data.get("destination") || "").trim(),
+      "_subject": "Quote request — " + (company || name),
+      "_template": "table"
+    };
+    sendBtn.disabled = true;
+    showNote("Sending…");
+    fetch(FORM_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify(payload)
+    })
+      .then(function (res) { return res.json().then(function (j) { return { ok: res.ok, j: j }; }); })
+      .then(function (r) {
+        if (r.ok && String(r.j.success) === "true") {
+          form.reset();
+          showNote("Thank you — your request has been sent. We will be in touch soon.");
+        } else {
+          throw new Error("not sent");
+        }
+      })
+      .catch(function () {
+        showNote("Sorry, the request could not be sent. Please email ryan.ding@chocoent.com directly.");
+      })
+      .then(function () { sendBtn.disabled = false; });
   });
 })();
