@@ -27,9 +27,9 @@
 
   /* Quote form: sends straight to the contact inbox via FormSubmit
      (formsubmit.co). The first submission triggers a one-time
-     activation email to kumo.sun@chocoent.com; after he confirms,
+     activation email to ryan.ding@chocoent.com; after he confirms,
      every submission arrives as a normal email. No mail app needed. */
-  var FORM_ENDPOINT = "https://formsubmit.co/ajax/kumo.sun@chocoent.com";
+  var FORM_ENDPOINT = "https://formsubmit.co/ajax/ryan.ding@chocoent.com";
   var form = document.getElementById("quoteForm");
   var note = document.getElementById("formNote");
   var sendBtn = form.querySelector(".btn-send");
@@ -46,7 +46,8 @@
       "Email or WeChat": (data.get("contact") || "").trim(),
       "Where do you want the brand to land?": (data.get("destination") || "").trim(),
       "_subject": "Quote request — " + (company || name),
-      "_template": "table"
+      "_template": "table",
+      "_cc": "calvin.fu@chocoent.com"
     };
     sendBtn.disabled = true;
     showNote("Sending…");
@@ -61,13 +62,13 @@
           form.reset();
           showNote("Thank you — your request has been sent. We will be in touch soon.");
         } else if (/activat/i.test(String(r.j.message || ""))) {
-          showNote("This form is waiting for activation. Please email kumo.sun@chocoent.com directly for now.");
+          showNote("This form is waiting for activation. Please email ryan.ding@chocoent.com directly for now.");
         } else {
           throw new Error("not sent");
         }
       })
       .catch(function () {
-        showNote("Sorry, the request could not be sent. Please email kumo.sun@chocoent.com directly.");
+        showNote("Sorry, the request could not be sent. Please email ryan.ding@chocoent.com directly.");
       })
       .then(function () { sendBtn.disabled = false; });
   });
