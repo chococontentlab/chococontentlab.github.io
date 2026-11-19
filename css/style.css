@@ -552,3 +552,27 @@ details[open] .case-toggle::after{transform:translate(-50%,-50%) rotate(0deg)}
   .case-tbd{font-size:14px}
   .logo-img{margin-top:20px}
 }
+
+/* ---------- case body copy + team accordion ---------- */
+.case-lead{margin:0;font-size:26px;line-height:38px;font-weight:700;color:#fff;max-width:1000px}
+.case-text{margin:18px 0 0;font-size:21px;line-height:34px;color:var(--grey-tx);max-width:1000px}
+.case-points{margin:18px 0 0;padding-left:22px;font-size:20px;line-height:32px;color:var(--grey-tx);max-width:1000px}
+.case-points li{margin:6px 0}
+.team-list .member-item{list-style:none}
+.team-list .member-item + .member-item{border-top:2px solid var(--line-dark)}
+.member-acc > summary{list-style:none;cursor:pointer;position:relative;align-items:center;padding-right:90px}
+.member-acc > summary::-webkit-details-marker{display:none}
+.member-item .member + .member{border-top:none}
+.member-toggle{right:0;bottom:auto;top:50%;margin-top:-24px}
+.member-body{padding:0 0 36px 196px;max-width:1056px}
+.member-body .member-bio{margin:0 0 14px}
+@media (max-width:640px){
+  .case-lead{font-size:16px;line-height:24px}
+  .case-text{margin-top:10px;font-size:14px;line-height:22px}
+  .case-points{margin-top:10px;padding-left:18px;font-size:13px;line-height:20px}
+  .team-list .member-item + .member-item{border-top-width:1px}
+  .member-acc > summary{padding-right:44px}
+  .member-toggle{margin-top:-15px}
+  .member-body{padding:0 0 20px 0}
+  .member-body .member-bio{margin-bottom:10px}
+}
